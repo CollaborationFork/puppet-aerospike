@@ -20,6 +20,7 @@ class aerospike::install {
     default => $aerospike::download_url,
   }
   $dest = "${aerospike::download_dir}/aerospike-server-${aerospike::edition}-${aerospike::version}-${aerospike::target_os_tag}"
+  $rpm  = "aerospike-server-${aerospike::edition}-${aerospike::version}*.${aerospike::target_os_tag}.x86_64.rpm"
 
   archive { "${dest}.tgz":
     ensure       => present,
@@ -31,10 +32,8 @@ class aerospike::install {
     creates      => $dest,
     cleanup      => $aerospike::remove_archive,
   } ~>
-  exec { 'aerospike-install-server':
-    command     => "${dest}/asinstall",
-    cwd         => $dest,
-    refreshonly => true,
+  package { $rpm:
+    source => "${dest}/${rpm}",
   }
 
   # #######################################
@@ -77,7 +76,7 @@ class aerospike::install {
         $amc_extract = false
         $amc_target_archive = "${aerospike::amc_download_dir}/aerospike-amc-${aerospike::edition}-${aerospike::amc_version}${amc_pkg_extension}"
         $amc_dest = $amc_target_archive
-        $bcrypt_os_packages  = ['gcc', 'libffi-devel', 'python-devel']
+        $bcrypt_os_packages  = ['gcc', 'libffi-devel', 'python-devel', 'openssl-devel']
       }
       default : {
         $amc_pkg_extension ='.tar.gz'
@@ -98,16 +97,16 @@ class aerospike::install {
     $os_packages  = ['python-pip', 'ansible']
     $pip_packages = ['markupsafe','paramiko','ecdsa','pycrypto']
     ensure_packages($os_packages, { ensure => installed, } )
-    ensure_packages($pip_packages, {
-      ensure   => installed,
-      provider => 'pip',
-      require  => [ Package['python-pip'], ],
-    })
     ensure_packages($bcrypt_os_packages, { ensure => installed, } )
     ensure_packages('bcrypt', {
       ensure   => installed,
       provider => 'pip',
       require  => [ Package[$bcrypt_os_packages], Package['python-pip'], ],
+    })
+    ensure_packages($pip_packages, {
+      ensure   => installed,
+      provider => 'pip',
+      require  => [ Package[$bcrypt_os_packages], ],
     })
     archive { $amc_target_archive:
       ensure       => present,
