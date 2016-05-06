@@ -94,7 +94,7 @@ class aerospike::install {
       default => $aerospike::amc_download_url,
     }
 
-    $os_packages  = ['python-pip', 'ansible']
+    $os_packages  = ['python-pip']
     $pip_packages = ['markupsafe','paramiko','ecdsa','pycrypto']
     ensure_packages($os_packages, { ensure => installed, } )
     ensure_packages($bcrypt_os_packages, { ensure => installed, } )
