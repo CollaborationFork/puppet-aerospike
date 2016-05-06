@@ -32,7 +32,7 @@ class aerospike::install {
     creates      => $dest,
     cleanup      => $aerospike::remove_archive,
   } ~>
-  package { $rpm:
+  package { "${dest}/$rpm":
     source => "${dest}/${rpm}",
   }
 
