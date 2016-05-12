@@ -19,8 +19,9 @@ class aerospike::install {
     undef   => "http://www.aerospike.com/artifacts/aerospike-server-${aerospike::edition}/${aerospike::version}/aerospike-server-${aerospike::edition}-${aerospike::version}-${aerospike::target_os_tag}.tgz",
     default => $aerospike::download_url,
   }
-  $dest = "${aerospike::download_dir}/aerospike-server-${aerospike::edition}-${aerospike::version}-${aerospike::target_os_tag}"
-  $rpm  = "aerospike-server-${aerospike::edition}-${aerospike::version}*.${aerospike::target_os_tag}.x86_64.rpm"
+  $dest         = "${aerospike::download_dir}/aerospike-server-${aerospike::edition}-${aerospike::version}-${aerospike::target_os_tag}"
+  $package_name = "aerospike-server-${aerospike::edition}-${aerospike::version}*.${aerospike::target_os_tag}.x86_64"
+  $rpm          = "${package_name}.rpm"
 
   archive { "${dest}.tgz":
     ensure       => present,
@@ -32,7 +33,7 @@ class aerospike::install {
     creates      => $dest,
     cleanup      => $aerospike::remove_archive,
   } ~>
-  package { "${dest}/$rpm":
+  package { $package_name:
     source   => "${dest}/${rpm}",
     provider => 'rpm',
   }
