@@ -20,7 +20,7 @@ class aerospike::install {
     default => $aerospike::download_url,
   }
   $dest         = "${aerospike::download_dir}/aerospike-server-${aerospike::edition}-${aerospike::version}-${aerospike::target_os_tag}"
-  $package_name = "aerospike-server-${aerospike::edition}-${aerospike::version}*.${aerospike::target_os_tag}.x86_64"
+  $package_name = "aerospike-server-${aerospike::edition}-${aerospike::version}-${aerospike::release_version}.${aerospike::target_os_tag}.x86_64"
   $rpm          = "${package_name}.rpm"
 
   archive { "${dest}.tgz":

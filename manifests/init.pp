@@ -8,19 +8,20 @@
 # https://github.com/tubemogul/puppet-aerospike/blob/master/README.markdown
 #
 class aerospike (
-  $version        = '3.7.2',
-  $download_dir   = '/usr/local/src',
-  $download_url   = undef,
-  $remove_archive = false,
-  $edition        = 'community',
-  $target_os_tag  = 'ubuntu14.04',
-  $download_user  = undef,
-  $download_pass  = undef,
-  $system_user    = 'root',
-  $system_uid     = 0,
-  $system_group   = 'root',
-  $system_gid     = 0,
-  $config_service = {
+  $version         = '3.7.2',
+  $release_version = '1',
+  $download_dir    = '/usr/local/src',
+  $download_url    = undef,
+  $remove_archive  = false,
+  $edition         = 'community',
+  $target_os_tag   = 'ubuntu14.04',
+  $download_user   = undef,
+  $download_pass   = undef,
+  $system_user     = 'root',
+  $system_uid      = 0,
+  $system_group    = 'root',
+  $system_gid      = 0,
+  $config_service  = {
     'paxos-single-replica-limit'    => 1,
     'pidfile'                       => '/var/run/aerospike/asd.pid',
     'service-threads'               => 4,
@@ -76,6 +77,7 @@ class aerospike (
 
   validate_string(
     $version,
+    $release_version,
     $download_dir,
     $edition,
     $target_os_tag,
