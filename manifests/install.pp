@@ -83,13 +83,23 @@ class aerospike::install {
           $bcrypt_os_packages  = ['gcc', 'libffi-devel', 'python-devel']
         }
       }
+      
       default : {
-        $amc_pkg_extension ='.tar.gz'
-        $amc_pkg_provider = undef
-        $amc_extract = true
-        $amc_target_archive = "${aerospike::amc_download_dir}/aerospike-amc-${aerospike::edition}-${aerospike::amc_version}${amc_pkg_extension}"
-        $amc_dest = "${aerospike::amc_download_dir}/aerospike-amc-${aerospike::edition}-${aerospike::amc_version}"
-        $bcrypt_os_packages  = ['gcc', 'libffi-devel', 'python-devel']
+        if $::operatingSystem == 'Amazon' {
+          $amc_pkg_extension ='.tar.gz'
+          $amc_pkg_provider = undef
+          $amc_extract = true
+          $amc_target_archive = "${aerospike::amc_download_dir}/aerospike-amc-${aerospike::edition}-${aerospike::amc_version}${amc_pkg_extension}"
+          $amc_dest = "${aerospike::amc_download_dir}/aerospike-amc-${aerospike::edition}-${aerospike::amc_version}"
+          $bcrypt_os_packages  = ['gcc', 'libffi-devel', 'python26-devel']        
+        } else {
+          $amc_pkg_extension ='.tar.gz'
+          $amc_pkg_provider = undef
+          $amc_extract = true
+          $amc_target_archive = "${aerospike::amc_download_dir}/aerospike-amc-${aerospike::edition}-${aerospike::amc_version}${amc_pkg_extension}"
+          $amc_dest = "${aerospike::amc_download_dir}/aerospike-amc-${aerospike::edition}-${aerospike::amc_version}"
+          $bcrypt_os_packages  = ['gcc', 'libffi-devel', 'python-devel']
+        }
       }
     }
 
