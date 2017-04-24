@@ -81,7 +81,7 @@ class aerospike::install {
         $amc_extract = false
         $amc_target_archive = "${aerospike::amc_download_dir}/aerospike-amc-${aerospike::edition}-${aerospike::amc_version}${amc_pkg_extension}"
         $amc_dest = $amc_target_archive
-        if $::operatingSystem == 'Amazon' {
+        if $::operatingsystem == 'Amazon' {
           $bcrypt_os_packages  = ['gcc', 'libffi-devel', 'python26-devel']
         } else {
           $bcrypt_os_packages  = ['gcc', 'libffi-devel', 'python-devel']
@@ -89,21 +89,13 @@ class aerospike::install {
       }
       
       default : {
-        if $::operatingSystem == 'Amazon' {
-          $amc_pkg_extension ='.tar.gz'
-          $amc_pkg_provider = undef
-          $amc_extract = true
-          $amc_target_archive = "${aerospike::amc_download_dir}/aerospike-amc-${aerospike::edition}-${aerospike::amc_version}${amc_pkg_extension}"
-          $amc_dest = "${aerospike::amc_download_dir}/aerospike-amc-${aerospike::edition}-${aerospike::amc_version}"
-          $bcrypt_os_packages  = ['gcc', 'libffi-devel', 'python26-devel']        
-        } else {
-          $amc_pkg_extension ='.tar.gz'
-          $amc_pkg_provider = undef
-          $amc_extract = true
-          $amc_target_archive = "${aerospike::amc_download_dir}/aerospike-amc-${aerospike::edition}-${aerospike::amc_version}${amc_pkg_extension}"
-          $amc_dest = "${aerospike::amc_download_dir}/aerospike-amc-${aerospike::edition}-${aerospike::amc_version}"
-          $bcrypt_os_packages  = ['gcc', 'libffi-devel', 'python-devel']
-        }
+		$amc_pkg_extension ='.tar.gz'
+		$amc_pkg_provider = undef
+		$amc_extract = true
+		$amc_target_archive = "${aerospike::amc_download_dir}/aerospike-amc-${aerospike::edition}-${aerospike::amc_version}${amc_pkg_extension}"
+		$amc_dest = "${aerospike::amc_download_dir}/aerospike-amc-${aerospike::edition}-${aerospike::amc_version}"
+		  $bcrypt_os_packages  = ['gcc', 'libffi-devel', 'python-devel']
+		
       }
     }
 
@@ -113,9 +105,9 @@ class aerospike::install {
       default => $aerospike::amc_download_url,
     }
 
-    if $::operatingSystem == 'Amazon' {
-      $os_packages  = ['python26-pip', 'ansible']
-      $pip_packages = ['markupsafe','paramiko','ecdsa','pycrypto']
+    if $::operatingsystem == 'Amazon' {
+      $os_packages  = ['python26-pip']
+      $pip_packages = ['markupsafe','paramiko','ecdsa','pycrypto','ansible']
       ensure_packages($os_packages, { ensure => installed, } )
       ensure_packages($pip_packages, {
         ensure   => installed,
