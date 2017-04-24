@@ -61,6 +61,10 @@ class aerospike::install {
   # #######################################
   if $aerospike::amc_install {
 
+      notice("----------------- Stelle 1 -----------------------------------------------")
+      notice("osfamily: ${::osfamily}, operatingSystem: ${::operatingSystem} ")
+      notice("--------------------------------------------------------------------------") 
+
     # On the amc, some elements are changing depending on the os familly
     case $::osfamily {
       'Debian': {
