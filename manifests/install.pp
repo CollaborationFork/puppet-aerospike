@@ -99,20 +99,38 @@ class aerospike::install {
       default => $aerospike::amc_download_url,
     }
 
-    $os_packages  = ['python-pip', 'ansible']
-    $pip_packages = ['markupsafe','paramiko','ecdsa','pycrypto']
-    ensure_packages($os_packages, { ensure => installed, } )
-    ensure_packages($pip_packages, {
-      ensure   => installed,
-      provider => 'pip',
-      require  => [ Package['python-pip'], ],
-    })
-    ensure_packages($bcrypt_os_packages, { ensure => installed, } )
-    ensure_packages('bcrypt', {
-      ensure   => installed,
-      provider => 'pip',
-      require  => [ Package[$bcrypt_os_packages], Package['python-pip'], ],
-    })
+    if $::operatingSystem == 'Amazon' {
+      $os_packages  = ['python26-pip', 'ansible']
+      $pip_packages = ['markupsafe','paramiko','ecdsa','pycrypto']
+      ensure_packages($os_packages, { ensure => installed, } )
+      ensure_packages($pip_packages, {
+        ensure   => installed,
+        provider => 'pip',
+        require  => [ Package['python26-pip'], ],
+      })
+      ensure_packages($bcrypt_os_packages, { ensure => installed, } )
+      ensure_packages('bcrypt', {
+        ensure   => installed,
+        provider => 'pip',
+        require  => [ Package[$bcrypt_os_packages], Package['python26-pip'], ],
+      })
+
+    } else {
+      $os_packages  = ['python-pip', 'ansible']
+      $pip_packages = ['markupsafe','paramiko','ecdsa','pycrypto']
+      ensure_packages($os_packages, { ensure => installed, } )
+      ensure_packages($pip_packages, {
+        ensure   => installed,
+        provider => 'pip',
+        require  => [ Package['python-pip'], ],
+      })
+      ensure_packages($bcrypt_os_packages, { ensure => installed, } )
+      ensure_packages('bcrypt', {
+        ensure   => installed,
+        provider => 'pip',
+        require  => [ Package[$bcrypt_os_packages], Package['python-pip'], ],
+      })
+    }
     archive { $amc_target_archive:
       ensure       => present,
       source       => $amc_src,
