@@ -47,6 +47,13 @@ network {
   }
 }
 
+
+mod-lua {
+        cache-enabled <% scope.lookupvar('aerospike::as_config_mod_lua') %>
+}
+
+
+
 <% unless scope.lookupvar('aerospike::config_cluster').empty? -%>
 cluster {
 <% scope.lookupvar('aerospike::config_cluster').sort.each do |k,v| -%>
